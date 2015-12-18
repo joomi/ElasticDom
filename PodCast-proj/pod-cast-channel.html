@@ -43,20 +43,38 @@
     todo:
         add attributes - loop | auto play
         add more theming options | colors
+        limit
+        cors
+
      */
-    var xhttp = new XMLHttpRequest();
+    var xhttp = new XMLHttpRequest(),
+        title,
+        items,
+        description,
+        image;
+
+
+
+
     xhttp.onreadystatechange = function() {
         if (xhttp.readyState == 4 && xhttp.status == 200) {
-            myFunction(xhttp);
+            parseXml(xhttp);
+        } else {
+            console.log("XML loading error");
+            return;
         }
     };
-    xhttp.open("GET", "books.xml", true);
+    xhttp.open("GET", "pod-cast-channel.xml", true);
     xhttp.send();
 
-    function myFunction(xml) {
+    function parseXml(xml) {
         var xmlDoc = xml.responseXML;
-        document.getElementById("demo").innerHTML =
-                xmlDoc.getElementsByTagName("title")[0].childNodes[0].nodeValue;
+        var channel = xmlDoc.getElementsByTagName("channel")[0];
+        var items = channel.getElementsByTagName("item");
+        console.log(items);
+
+        //document.getElementById("demo").innerHTML =
+        //        xmlDoc.getElementsByTagName("title")[0].childNodes[0].nodeValue;
     }
 
     
@@ -68,7 +86,8 @@
         template = doc.querySelector('#template'),
         style = document.importNode(template.content, true),
         wrapper = document.createElement('div');
-        wrapper.className = 'container gradient';
+        if(this.getAttribute('wrapper') == "true")
+            wrapper.className = 'container gradient';
 
         audio = document.createElement('audio');
         audio.controls = (this.getAttribute('controls'))?true:false;
@@ -99,7 +118,7 @@
         shadow.appendChild(wrapper);
     };
 
-    var PodCastPlayer = document.registerElement('pod-cast-player', {
+    var PodCastPlayer = document.registerElement('pod-cast-channel', {
         prototype: PodCastProto
     });
 

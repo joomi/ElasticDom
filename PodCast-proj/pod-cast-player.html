@@ -1,7 +1,7 @@
 <template id="template">
     <style>
 
-        .gradient, audio {
+        .gradient, .container audio {
             border: 1px solid black;
             -webkit-box-shadow: inset 0 1px 0px rgba(255,255,255,.2);
             -moz-box-shadow: inset 0 1px 0px rgba(255,255,255,.2);
@@ -16,11 +16,7 @@
         }
 
         .container {
-            -webkit-transition: all .7s ease;
-            -moz-transition: all .7s ease;
-            -o-transition: all .7s ease;
-            -ms-transition: all .7s ease;
-            transition: all .7s ease;
+            color: #fff;
             -webkit-border-radius: 10px;
             -moz-border-radius: 10px;
             border-radius: 10px;
@@ -34,8 +30,37 @@
             -ms-box-sizing: border-box;
             box-sizing: border-box;
             display: inline-block;
+            width: 407px;
         }
 
+        h4{
+            min-width: 30%;
+            margin: 0 0 12px;
+            display: inline-block;
+            text-overflow: ellipsis;
+            max-width: 78%;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+
+        img{
+            width: 100%;
+        }
+        .pod-cast-icon{
+            float: left;
+            overflow: hidden;
+            max-width: 65px;
+            margin-right: 16px;
+        }
+        span{
+            display: block;
+            font-style: italic;
+            font-size: 12px;
+            text-align: right;
+        }
+        p{
+            margin: 6px 0;
+        }
     </style>
 </template>
 <script>
@@ -44,17 +69,23 @@
         add attributes - loop | auto play
         add more theming options | colors
      */
+
     var PodCastProto = Object.create(HTMLElement.prototype),
+    eventHandler = function(f,p){
+        return eval(f)(p)
+    },
     doc = this.document._currentScript.ownerDocument;
 
     PodCastProto.createdCallback = function() {
         var shadow = this.createShadowRoot(),
         template = doc.querySelector('#template'),
         style = document.importNode(template.content, true),
-        wrapper = document.createElement('div');
-        wrapper.className = 'container gradient';
-
+        wrapper = document.createElement('div'),
+        title,
         audio = document.createElement('audio');
+        wrapper.className = 'container gradient';
+        wrapper.appendChild(style);
+
         audio.controls = (this.getAttribute('controls'))?true:false;
         if(className = this.getAttribute('class-name')) {
             audio.className = className;
@@ -77,8 +108,45 @@
             source.src = wav;
             audio.appendChild(source);
         }
-        wrapper.appendChild(style);
+        if(title = this.getAttribute('title')) {
+            var titleEl = document.createElement('h4');
+            var t = document.createTextNode(title);
+            titleEl.appendChild(t);
+            wrapper.appendChild(titleEl);
+        }
+        if(icon = this.getAttribute('icon')) {
+            var divEl = document.createElement('div'),
+            iconEl = document.createElement('img');
+            divEl.className = 'pod-cast-icon';
+            iconEl.src = icon;
+            iconEl.alt = title;
+            iconEl.title = title;
+            divEl.appendChild(iconEl);
+            wrapper.appendChild(divEl);
+        }
+        if(eventParam = this.getAttribute('event')){
+            eventArr = eventParam.split("|");
+            console.log(eventArr[0]);
+            if (eventArr[0].match("ended|playing|waiting|seeking|loadedmetadata|loadeddata|canplay|play|pause|volumechange|suspend|stalled"))
+                audio.addEventListener(eventArr[0], function(){return eventHandler(eventArr[1],eventArr[2])})
+            else
+                console.log("This audio event is not supported")
+        }
+
         wrapper.appendChild(audio);
+
+        if(duration = this.getAttribute('duration')) {
+            var durationEl = document.createElement('span');
+            var t = document.createTextNode(duration);
+            durationEl.appendChild(t);
+            wrapper.appendChild(durationEl);
+        }
+        if(description = this.getAttribute('description')) {
+            var descriptionEl = document.createElement('p');
+            var t = document.createTextNode(description);
+            descriptionEl.appendChild(t);
+            wrapper.appendChild(descriptionEl);
+        }
 
         shadow.appendChild(wrapper);
     };

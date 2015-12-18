@@ -5,14 +5,52 @@
 
     <meta charset="utf-8">
     <title>&lt;joomi&gt;</title>
-    <link rel="import" href="pod-cast-player.html">
+    <!--<link rel="import" href="pod-cast-player.html">-->
+    <link rel="import" href="pod-cast-channel.html">
 
+    <script>
+        function endFunction(s){
+            alert(s);
+        }
+    </script>
 </head>
 <body>
 
 <!-- Runs custom element -->
-<!--<pod-cast></pod-cast>-->
-<pod-cast-player ogg-src="http://www.w3schools.com/html/horse.ogg" mpg-src="http://www.w3schools.com/html/horse.mp3" controls="true"></pod-cast-player>
+<pod-cast-player
+        ogg-src="http://www.w3schools.com/html/horse.ogg"
+        mpg-src="http://www.w3schools.com/html/horse.mp3"
+        controls="true"
+        event="ended|endFunction|track ended"
+        icon="http://www.ranlevi.com/wp-content/uploads/powerpress/LogoItunes.jpg"
+        title="my podcs gs f gsdfg sd fgsdg sg dfg sdfg sdfg ast"
+        duration="01:15:02"
+        description="my podcast description.."
+        >
+</pod-cast-player>
+<pod-cast-player
+        ogg-src="http://www.w3schools.com/html/horse.ogg"
+        mpg-src="http://www.w3schools.com/html/horse.mp3"
+        controls="true"
+        event="ended|endFunction|track ended"
+        icon="http://www.ranlevi.com/wp-content/uploads/powerpress/LogoItunes.jpg"
+        title="my podcast"
+        duration="01:15:02"
+        description="my podcast description.."
+        >
+</pod-cast-player>
+
+<pod-cast-channel
+        ogg-src="http://www.w3schools.com/html/horse.ogg"
+        mpg-src="http://www.w3schools.com/html/horse.mp3"
+        controls="true"
+        event="ended|endFunction|track ended"
+        icon="http://www.ranlevi.com/wp-content/uploads/powerpress/LogoItunes.jpg"
+        title="my podcs gs f gsdfg sd fgsdg sg dfg sdfg sdfg ast"
+        duration="01:15:02"
+        description="my podcast description.."
+        >
+</pod-cast-channel>
 
 </body>
 </html>
