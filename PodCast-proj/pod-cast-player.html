@@ -87,9 +87,6 @@
         wrapper.appendChild(style);
 
         audio.controls = (this.getAttribute('controls'))?true:false;
-        if(className = this.getAttribute('class-name')) {
-            audio.className = className;
-        }
         if(ogg = this.getAttribute('ogg-src')) {
             var source = document.createElement('source');
             source.type = 'audio/ogg';
